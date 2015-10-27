@@ -1,0 +1,37 @@
+
+{
+   "name":"SmokingTedscreen",
+   "description":"An tiled homescreen for FirefoxOS dedicated to Ted",
+   "launch_path":"/index.html",
+   "type":"certified",
+   "role":"homescreen",
+   "developer":{
+      "name":"leandro713",
+      "url":"https://github.com/novia713/"
+   },
+   "permissions":{
+      "webapps-manage":{
+      }
+   },
+   "locales":{
+      "en-US":{
+         "name":"Tilescreen",
+         "description":"An tiled homescreen for FirefoxOS dedicated to our buddy Ted"
+      }
+   },
+   "default_locale":"en-US",
+   "icons":{
+      "128":"/style/icons/smokingted-128.png",
+      "60":"/style/icons/smokingted-60.png",
+      "48":"/style/icons/smokingted-48.png",
+      "32":"/style/icons/smokingted-32.png",
+      "30":"/style/icons/smokingted-30.png",
+      "16":"/style/icons/smokingted-16.png"
+   },
+   "orientation":"portrait-primary",
+   "activities":{
+   },
+   "messages":[
+
+   ]
+}
