@@ -11,6 +11,16 @@
 // Universal Pictures, please, don't sue me :)
 
 
+/*
+ * HOW TO DO HOMESCREENS MAGIC WITH FXOS 2.6
+ * =========================================
+ * 1, manifest webapp → "type":"privileged", "permission": "homescreen-webapps-manage"
+ * 2. navigator.mozApps.mgmt.getAll()
+ * 3. navigator.mozApps.mgmt.getIcon()
+ *
+ **/
+
+
 requirejs.config({
     appDir: ".",
     baseUrl: "js",
@@ -85,31 +95,37 @@ require(["jQuery", 'underscore', 'auderoSmokeEffect'], function(jQuery, _) {
     var render = function(icon) {
             if (!icon.manifest.icons) return;
 
+            // get the first icon
             var get_img_icon = function (icon) {
                 for (var k in icon.manifest.icons)
                     return  k;
             };
 
-            var icon_image = icon.installOrigin + icon.manifest.icons[get_img_icon(icon)];
+            var icon_image = navigator.mozApps.mgmt.getIcon(icon, get_img_icon(icon));
+            icon_image.then ( function ( img ) {
+
+                console.log(img);
+
+                var name = icon.manifest.name;
+                var wordname = name.split(" ");
+                var firstchar = name.charAt(0);
+                var tile_bg = ('violet' == config.selected_theme) ?
+                    config.pink_tile_bg :
+                    config.green_tile_bg;
+
+                /* tile generation*/
+                var tile = document.createElement('div');
+                tile.className = 'tile';
+                tile.className += ' icon_' + wordname[0];
+                var str_tile = (config.color_tile) ? ", " + tile_bg : "";
+                // TODO: print here the blog "img"
+                tile.style.background = get_color(name) + ' url(' + img +') 49% no-repeat';
+                $('#apps').append(tile);
+                iconMap.set(tile, icon);
+                /* end tile generation*/
+            });
+
             if (typeof icon_image == undefined) return;
-
-
-            var name = icon.manifest.name;
-            var wordname = name.split(" ");
-            var firstchar = name.charAt(0);
-            var tile_bg = ('violet' == config.selected_theme) ?
-                config.pink_tile_bg :
-                config.green_tile_bg;
-
-            /* tile generation*/
-            var tile = document.createElement('div');
-            tile.className = 'tile';
-            tile.className += ' icon_' + wordname[0];
-            var str_tile = (config.color_tile) ? ", " + tile_bg : "";
-            tile.style.background = get_color(name) + ' url(' + icon_image +') 49% no-repeat';
-            $('#apps').append(tile);
-            iconMap.set(tile, icon);
-            /* end tile generation*/
     }
 
 
