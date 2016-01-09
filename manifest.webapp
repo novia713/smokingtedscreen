@@ -10,8 +10,8 @@
       "url":"https://github.com/novia713/"
    },
    "permissions":{
-      "homescreen-webapps-manage":{
-      }
+      "homescreen-webapps-manage":{},
+      "moz-extremely-unstable-and-will-change-webcomponents": {}
    },
    "locales":{
       "en-US":{

@@ -5,8 +5,8 @@
  * v. 20151027
  */
 
-
-// i did this because i liked the characted,
+// Reference: https://github.com/mozilla-b2g/gaia/tree/88c8d6b7c6ab65505c4a221b61c91804bbabf891/apps/homescreen
+// i did this because i liked the character,
 // i have not relation and not own anything related to Ted.
 // Universal Pictures, please, don't sue me :)
 
@@ -110,10 +110,21 @@ require(["jQuery", 'underscore', 'auderoSmokeEffect'], function(jQuery, _) {
             /**
              * Fetch all apps and render them.
              */
-            FxosApps.all()
-                .then(icons => {
-                    icons.forEach(render);
-                });
+            var icons = new Array();
+            var myApps = new Promise((resolve, reject) => {
+                    var request = navigator.mozApps.mgmt.getAll();
+                    request.onsuccess = (e) => {
+                      for (var app of request.result) {
+                        icons.push(navigator.mozApps.mgmt.getAppIcon(app, "60"));
+                      }
+                    };
+                    request.onerror = (e) => {
+                      console.error('Error calling getAll: ' + request.error.name);
+                      resolve();
+                    };
+            })
+
+            myApps.then(this.render(icons));
 
             //TED
             ted();
