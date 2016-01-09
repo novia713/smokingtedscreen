@@ -82,7 +82,7 @@ require(["jQuery", 'underscore', 'auderoSmokeEffect'], function(jQuery, _) {
     /**
      * Renders the icon to the container.
      */
-    var render = function(icon) {
+    var render = function(icon) { console.log(icon);
             var name = icon.app.manifest.name;
             //console.log(name);
             var wordname = name.split(" ");
@@ -94,10 +94,8 @@ require(["jQuery", 'underscore', 'auderoSmokeEffect'], function(jQuery, _) {
             tile.className = 'tile';
             tile.className += ' icon_' + wordname[0];
             var str_tile = (config.color_tile) ? ", " + tile_bg : "";
-            tile.style.background = get_color(name) + ' url(' + icon.icon +
-                ') 49% no-repeat';
-            $('#apps')
-                .append(tile);
+            tile.style.background = get_color(name) + ' url(' + icon.icon +') 49% no-repeat';
+            $('#apps').append(tile);
             iconMap.set(tile, icon);
             /* end tile generation*/
     }
@@ -113,18 +111,21 @@ require(["jQuery", 'underscore', 'auderoSmokeEffect'], function(jQuery, _) {
             var icons = new Array();
             var myApps = new Promise((resolve, reject) => {
                     var request = navigator.mozApps.mgmt.getAll();
+
                     request.onsuccess = (e) => {
                       for (var app of request.result) {
-                        icons.push(navigator.mozApps.mgmt.getAppIcon(app, "60"));
+                        icons.push(navigator.mozApps.mgmt.getIcon(app, "60"));
+                        console.info(icons);
                       }
                     };
+
                     request.onerror = (e) => {
                       console.error('Error calling getAll: ' + request.error.name);
                       resolve();
                     };
             })
 
-            myApps.then(this.render(icons));
+            myApps.then( render(icons) );
 
             //TED
             ted();
