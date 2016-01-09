@@ -2,7 +2,7 @@
  * Tedscreen
  * (c) leandro@leandro.org
  * MIT license
- * v. 20151027
+ * v. 2016019
  */
 
 // Reference: https://github.com/mozilla-b2g/gaia/tree/88c8d6b7c6ab65505c4a221b61c91804bbabf891/apps/homescreen
@@ -82,19 +82,31 @@ require(["jQuery", 'underscore', 'auderoSmokeEffect'], function(jQuery, _) {
     /**
      * Renders the icon to the container.
      */
-    var render = function(icon) { console.log(icon);
-            var name = icon.app.manifest.name;
-            //console.log(name);
+    var render = function(icon) {
+            if (!icon.manifest.icons) return;
+
+            var get_img_icon = function (icon) {
+                for (var k in icon.manifest.icons)
+                    return  k;
+            };
+
+            var icon_image = icon.installOrigin + icon.manifest.icons[get_img_icon(icon)];
+            if (typeof icon_image == undefined) return;
+
+
+            var name = icon.manifest.name;
             var wordname = name.split(" ");
             var firstchar = name.charAt(0);
-            var tile_bg = ('violet' == config.selected_theme) ? config.pink_tile_bg :
+            var tile_bg = ('violet' == config.selected_theme) ?
+                config.pink_tile_bg :
                 config.green_tile_bg;
+
             /* tile generation*/
             var tile = document.createElement('div');
             tile.className = 'tile';
             tile.className += ' icon_' + wordname[0];
             var str_tile = (config.color_tile) ? ", " + tile_bg : "";
-            tile.style.background = get_color(name) + ' url(' + icon.icon +') 49% no-repeat';
+            tile.style.background = get_color(name) + ' url(' + icon_image +') 49% no-repeat';
             $('#apps').append(tile);
             iconMap.set(tile, icon);
             /* end tile generation*/
@@ -108,14 +120,13 @@ require(["jQuery", 'underscore', 'auderoSmokeEffect'], function(jQuery, _) {
             /**
              * Fetch all apps and render them.
              */
-            var icons = new Array();
+
             var myApps = new Promise((resolve, reject) => {
                     var request = navigator.mozApps.mgmt.getAll();
 
                     request.onsuccess = (e) => {
                       for (var app of request.result) {
-                        icons.push(navigator.mozApps.mgmt.getIcon(app, "60"));
-                        console.info(icons);
+                        render( app );
                       }
                     };
 
@@ -123,9 +134,8 @@ require(["jQuery", 'underscore', 'auderoSmokeEffect'], function(jQuery, _) {
                       console.error('Error calling getAll: ' + request.error.name);
                       resolve();
                     };
-            })
+            });
 
-            myApps.then( render(icons) );
 
             //TED
             ted();
