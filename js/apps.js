@@ -94,19 +94,16 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
     var render = function(icon) {
             if (!icon.manifest.icons) return;
 
-            // get the first icon
-            var get_img_icon = function (icon) {
-                return R.head( R.keys( icon.manifest.icons) );
-            };
-
             // guards
-            if (get_img_icon(icon) < 64) return;
+            if (R.head (R.keys (icon.manifest.icons)) < 60) return;
             if (icon.manifest.name == "Downloads") return;
             if (icon.manifest.name == "EmergencyCall") return;
             if (icon.manifest.name == "System") return;
             if (icon.manifest.name == "Legacy") return;
+            if (icon.manifest.role == "homescreen") return;
+            if (icon.manifest.type == "addon") return;
 
-            var icon_image = navigator.mozApps.mgmt.getIcon(icon, get_img_icon(icon));
+            var icon_image = navigator.mozApps.mgmt.getIcon(icon, 60);
 
             icon_image.then ( function ( img ) {
 
