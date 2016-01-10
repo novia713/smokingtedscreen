@@ -18,6 +18,7 @@
  * 2. navigator.mozApps.mgmt.getAll()
  * 3. navigator.mozApps.mgmt.getIcon()
  * 4. window.URL.createObjectURL( img )
+ *
  **/
 
 
@@ -42,16 +43,22 @@ requirejs.config({
 
 
 require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
-    // basic vars
+
+    const apps_2_exclude = [
+        "Downloads", "EmergencyCall", "System", "Legacy", "Ringtones",
+        "Legacy Home Screen", "Wallpaper", "Default Theme",
+        "Built-in Keyboard", "Bluetooth Manager", "Communications",
+        "PDF Viewer", "Network Alerts", "WAP Push manager", "Default Home Screen" ];
+
     var parent = $('#apps');
     var iconMap = new WeakMap();
-    /* CONFIG */
+
     var x = 2; //default icon columns key value
     var config = {};
     config.columns = [];
     config.columns[2] = 65;
     config.columns[3] = 35;
-    /* END CONFIG */
+
     //Ted tile
     var ted = function() {
             var tile = document.createElement('div');
@@ -62,22 +69,23 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
             $('#apps').prepend(tile);
 
     }
+
     //colors
     var get_color = function(app) {
         var obj_color = {};
         obj_color.Communications = "#B2F2FF"; //green 5F9B0A
-        obj_color.Calendar = "#FF4E00"; //orange
-        obj_color['E-Mail'] = "#FF4E00"; //orange
+        obj_color.Calendar = "#FF4E00";    //orange
+        obj_color['E-Mail'] = "#FF4E00";   //orange
         obj_color['FM Radio'] = "#2C393B"; //grey
-        obj_color.Camera = "#00AACC"; //blue
-        obj_color.Clock = "#333333"; //warm grey
-        obj_color.Gallery = "#00AACC"; //blue
+        obj_color.Camera = "#00AACC";      //blue
+        obj_color.Clock = "#333333";       //warm grey
+        obj_color.Gallery = "#00AACC";     //blue
         obj_color.Marketplace = "#00AACC"; //blue
-        obj_color.Browser = "#00AACC"; //blue
-        obj_color.Messages = "#5F9B0A"; //green
-        obj_color.Video = "#CD6723"; //brick
-        obj_color.Music = "#CD6723"; //brick
-        obj_color.Settings = "#EAEAE7"; //ivory
+        obj_color.Browser = "#00AACC";     //blue
+        obj_color.Messages = "#5F9B0A";    //green
+        obj_color.Video = "#CD6723";       //brick
+        obj_color.Music = "#CD6723";       //brick
+        obj_color.Settings = "#EAEAE7";    //ivory
         if (obj_color[app]) {
             return obj_color[app];
         } else {
@@ -92,13 +100,11 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
      * Renders the icon to the container.
      */
     var render = function(icon) {
+
             if (!icon.manifest.icons) return;
 
             // guards
-            //if (R.head (R.keys (icon.manifest.icons)) < 60) return;
-            if( R.contains ( icon.manifest.name,
-                ["Downloads", "EmergencyCall", "System", "Legacy", "Ringtones", "Default Theme", "Default Home Screen", "Legacy Home Screen", "Wallpaper",
-                 "Built-in Keyboard", "Bluetooth Manager", "Communications", "PDF Viewer", "Network Alerts", "WAP Push manager"]))
+            if( R.contains ( icon.manifest.name, apps_2_exclude ))
                 return;
 
             if (icon.manifest.role == "homescreen") return;
@@ -122,10 +128,11 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
                 var tile = document.createElement('div');
                 tile.className = 'tile';
                 tile.className += ' icon_' + wordname[0];
+
                 var str_tile = (config.color_tile) ? ", " + tile_bg : "";
-                // TODO: print here the blog "img"
                 tile.style.background = get_color(name) + ' url(' + window.URL.createObjectURL(  img ) +') 49% no-repeat';
                 $('#apps').append(tile);
+
                 iconMap.set(tile, icon);
                 /* end tile generation*/
             });
@@ -138,9 +145,7 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
     var start = function() {
             $('.tile').remove();
 
-            /**
-             * Fetch all apps and render them.
-             */
+            /** Fetch all apps and render them. */
 
             var myApps = new Promise((resolve, reject) => {
                     var request = navigator.mozApps.mgmt.getAll();
@@ -178,6 +183,7 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
    */
     window.addEventListener('click', e => {
         console.log(e);
+
         var i = iconMap.get(e.target);
         if (i) i.launch();
 
@@ -189,9 +195,13 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
 
 
     $(document).on('visibilitychange', function(e) {
+
         if (e.target.visibilityState === "visible") {
+
             $("#pill").auderoSmokeEffect('enable');
+
         } else if (e.target.visibilityState === "hidden") {
+
             $("#pill").auderoSmokeEffect('disable');
         }
     });
