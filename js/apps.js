@@ -101,7 +101,7 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
             if (icon.manifest.name == "System") return;
             if (icon.manifest.name == "Legacy") return;
             if (icon.manifest.role == "homescreen") return;
-            if (icon.manifest.type == "addon") return;
+            if (icon.manifest.role == "addon") return;
 
             var icon_image = navigator.mozApps.mgmt.getIcon(icon, 60);
 
