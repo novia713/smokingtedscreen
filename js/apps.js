@@ -102,6 +102,9 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
             // guards
             if (get_img_icon(icon) < 64) return;
             if (icon.manifest.name == "Downloads") return;
+            if (icon.manifest.name == "EmergencyCall") return;
+            if (icon.manifest.name == "System") return;
+            if (icon.manifest.name == "Legacy") return;
 
             var icon_image = navigator.mozApps.mgmt.getIcon(icon, get_img_icon(icon));
 
