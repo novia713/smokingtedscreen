@@ -17,7 +17,7 @@
  * 1, manifest webapp → "type":"privileged", "permission": "homescreen-webapps-manage"
  * 2. navigator.mozApps.mgmt.getAll()
  * 3. navigator.mozApps.mgmt.getIcon()
- *
+ * 4. window.URL.createObjectURL( img )
  **/
 
 
@@ -27,7 +27,7 @@ requirejs.config({
     paths: {
         'jQuery': ['jquery-2.1.4.min'],
         'auderoSmokeEffect': ['jquery.auderoSmokeEffect.min'],
-        'underscore': ['underscore-min']
+        'ramdajs': ['ramda.min']
     },
     shim: {
         "auderoSmokeEffect": {
@@ -41,7 +41,7 @@ requirejs.config({
 });
 
 
-require(["jQuery", 'underscore', 'auderoSmokeEffect'], function(jQuery, R) {
+require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) { console.log(R);
     // basic vars
     var parent = $('#apps');
     var iconMap = new WeakMap();
@@ -99,7 +99,9 @@ require(["jQuery", 'underscore', 'auderoSmokeEffect'], function(jQuery, R) {
                 return R.head( R.keys( icon.manifest.icons) );
             };
 
-            if (get_img_icon(icon) < 84) return;
+            // guards
+            if (get_img_icon(icon) < 64) return;
+            if (icon.manifest.name == "Downloads") return;
 
             var icon_image = navigator.mozApps.mgmt.getIcon(icon, get_img_icon(icon));
 
