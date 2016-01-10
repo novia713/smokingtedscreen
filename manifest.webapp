@@ -14,7 +14,7 @@
    },
    "locales":{
       "en-US":{
-         "name":"Tilescreen",
+         "name":"SmokingTedscreen",
          "description":"An tiled homescreen for FirefoxOS dedicated to our buddy Ted"
       }
    },
