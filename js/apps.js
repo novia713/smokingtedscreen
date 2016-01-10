@@ -2,7 +2,7 @@
  * Tedscreen
  * (c) leandro@leandro.org
  * MIT license
- * v. 2016019
+ * v. 20160110
  */
 
 // Reference: https://github.com/mozilla-b2g/gaia/tree/88c8d6b7c6ab65505c4a221b61c91804bbabf891/apps/homescreen
@@ -34,15 +34,14 @@ requirejs.config({
             exports: "$",
             deps: ['jQuery']
         },
-        'underscore': {
-            exports: '_',
-            deps: ['jQuery']
+        'ramdajs': {
+            exports: 'R'
         }
     }
 });
 
 
-require(["jQuery", 'underscore', 'auderoSmokeEffect'], function(jQuery, _) {
+require(["jQuery", 'underscore', 'auderoSmokeEffect'], function(jQuery, R) {
     // basic vars
     var parent = $('#apps');
     var iconMap = new WeakMap();
@@ -97,14 +96,16 @@ require(["jQuery", 'underscore', 'auderoSmokeEffect'], function(jQuery, _) {
 
             // get the first icon
             var get_img_icon = function (icon) {
-                for (var k in icon.manifest.icons)
-                    return  k;
+                return R.head( R.keys( icon.manifest.icons) );
             };
 
+            if (get_img_icon(icon) < 84) return;
+
             var icon_image = navigator.mozApps.mgmt.getIcon(icon, get_img_icon(icon));
+
             icon_image.then ( function ( img ) {
 
-                console.log(img);
+
 
                 var name = icon.manifest.name;
                 var wordname = name.split(" ");
@@ -119,7 +120,7 @@ require(["jQuery", 'underscore', 'auderoSmokeEffect'], function(jQuery, _) {
                 tile.className += ' icon_' + wordname[0];
                 var str_tile = (config.color_tile) ? ", " + tile_bg : "";
                 // TODO: print here the blog "img"
-                tile.style.background = get_color(name) + ' url(' + img +') 49% no-repeat';
+                tile.style.background = get_color(name) + ' url(' + window.URL.createObjectURL(  img ) +') 49% no-repeat';
                 $('#apps').append(tile);
                 iconMap.set(tile, icon);
                 /* end tile generation*/
