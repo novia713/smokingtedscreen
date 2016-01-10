@@ -95,13 +95,26 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
             if (!icon.manifest.icons) return;
 
             // guards
-            if (R.head (R.keys (icon.manifest.icons)) < 60) return;
+            //if (R.head (R.keys (icon.manifest.icons)) < 60) return;
             if (icon.manifest.name == "Downloads") return;
             if (icon.manifest.name == "EmergencyCall") return;
             if (icon.manifest.name == "System") return;
             if (icon.manifest.name == "Legacy") return;
+            if (icon.manifest.name == "Ringtones") return;
+            if (icon.manifest.name == "Default Theme") return;
+            if (icon.manifest.name == "Default Home Screen") return;
+            if (icon.manifest.name == "Legacy Home Screen") return;
+            if (icon.manifest.name == "Wallpaper") return;
+            if (icon.manifest.name == "Built-in Keyboard") return;
+            if (icon.manifest.name == "Bluetooth Manager") return;
+            if (icon.manifest.name == "Communications") return;
+            if (icon.manifest.name == "PDF Viewer") return;
+            if (icon.manifest.name == "Network Alerts") return;
+            if (icon.manifest.name == "WAP Push manager") return;
+
             if (icon.manifest.role == "homescreen") return;
             if (icon.manifest.role == "addon") return;
+            //end guards
 
             var icon_image = navigator.mozApps.mgmt.getIcon(icon, 60);
 
