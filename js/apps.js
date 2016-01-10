@@ -41,7 +41,7 @@ requirejs.config({
 });
 
 
-require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) { console.log(R);
+require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
     // basic vars
     var parent = $('#apps');
     var iconMap = new WeakMap();
