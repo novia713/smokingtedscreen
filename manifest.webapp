@@ -10,7 +10,9 @@
       "url":"https://github.com/novia713/"
    },
    "permissions":{
-      "homescreen-webapps-manage":{}
+      "homescreen-webapps-manage":{
+        "description": "Required for manage icon apps in homescreen"
+      }
    },
    "locales":{
       "en-US":{
