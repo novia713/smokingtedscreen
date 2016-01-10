@@ -1,35 +1,70 @@
-/*
+/**
+ *          .·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.
+ *          .·' H O M E S C R E E N S F O R A L L'·.  by leandro713
+ *          .·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.·.
+ *
  * Tedscreen
- * (c) leandro@leandro.org
- * MIT license
- * v. 20160110
+ *
+ * This is a custom homescreen dedicated to our good buddy Ted.
+ * Initially, i developed custom homescreens as certified apps.
+ * I usually flashed them to my phones with the WebIDE.
+ * When #firefoxos 2.6 arrived, a new permission was created for making
+ * homescreens possible as privileged apps ["homescreen-webapps-manage"].
+ *
+ * So, this is my first try to do that way.
+ *
+ * @author      leandro713 <leandro@leandro.org>
+ * @copyright   leandro713 - 2016
+ * @link        https://github.com/novia713/smokingtedscreen
+ * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
+ * @version     1.1
+ * @date        20160110
+ *
+ * @see         https://github.com/mozilla-b2g/gaia/tree/88c8d6b7c6ab65505c4a221b61c91804bbabf891/apps/homescreen
+ * @thanks      to @CodingFree for his tireless support and benevolent friendship
+ * @todo
+ *      - show wifi network name and telephony provider name
+ *      - show weather
+ *      - show missed calls
  */
 
-// Reference: https://github.com/mozilla-b2g/gaia/tree/88c8d6b7c6ab65505c4a221b61c91804bbabf891/apps/homescreen
-// i did this because i liked the character,
-// i have not relation and not own anything related to Ted.
-// Universal Pictures, please, don't sue me :)
+
+
+/**
+ *  I (leandro713) did this because i liked the character,
+ *  I have not relation and not own anything related to Ted.
+ *  Universal Pictures, please, don't sue me :)
+ **/
 
 
 /*
  * HOW TO DO HOMESCREENS MAGIC WITH FXOS 2.6
  * =========================================
- * 1, manifest webapp → "type":"privileged", "permission": "homescreen-webapps-manage"
- * 2. navigator.mozApps.mgmt.getAll()
- * 3. navigator.mozApps.mgmt.getIcon()
- * 4. window.URL.createObjectURL( img )
+ * 1, manifest.webapp →
+ *      "type":"privileged",
+ *      "permission": "homescreen-webapps-manage"
+ *
+ * 2. navigator.mozApps.mgmt.getAll()               // gets all the apps installed on the phone
+ *
+ * 3. navigator.mozApps.mgmt.getIcon(app, size)     // gets the icon of the app at the desired (more or less) size
+ *
+ * 4. window.URL.createObjectURL( img )             // userful for printin' the blob resulting of getIcon()
+ *
  *
  **/
 
 
 requirejs.config({
+
     appDir: ".",
     baseUrl: "js",
+
     paths: {
         'jQuery': ['jquery-2.1.4.min'],
         'auderoSmokeEffect': ['jquery.auderoSmokeEffect.min'],
         'ramdajs': ['ramda.min']
     },
+
     shim: {
         "auderoSmokeEffect": {
             exports: "$",
@@ -39,6 +74,7 @@ requirejs.config({
             exports: 'R'
         }
     }
+
 });
 
 
@@ -72,26 +108,27 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
 
     //colors
     var get_color = function(app) {
+
         var obj_color = {};
-        obj_color.Communications = "#B2F2FF"; //green 5F9B0A
-        obj_color.Calendar = "#FF4E00";    //orange
-        obj_color['E-Mail'] = "#FF4E00";   //orange
-        obj_color['FM Radio'] = "#2C393B"; //grey
-        obj_color.Camera = "#00AACC";      //blue
-        obj_color.Clock = "#333333";       //warm grey
-        obj_color.Gallery = "#00AACC";     //blue
-        obj_color.Marketplace = "#00AACC"; //blue
-        obj_color.Browser = "#00AACC";     //blue
-        obj_color.Messages = "#5F9B0A";    //green
-        obj_color.Video = "#CD6723";       //brick
-        obj_color.Music = "#CD6723";       //brick
-        obj_color.Settings = "#EAEAE7";    //ivory
+        obj_color.Communications = "#B2F2FF";       //green 5F9B0A
+        obj_color.Calendar       = "#FF4E00";       //orange
+        obj_color['E-Mail']      = "#FF4E00";       //orange
+        obj_color['FM Radio']    = "#2C393B";       //grey
+        obj_color.Camera         = "#00AACC";       //blue
+        obj_color.Clock          = "#333333";       //warm grey
+        obj_color.Gallery        = "#00AACC";       //blue
+        obj_color.Marketplace    = "#00AACC";       //blue
+        obj_color.Browser        = "#00AACC";       //blue
+        obj_color.Messages       = "#5F9B0A";       //green
+        obj_color.Video          = "#CD6723";       //brick
+        obj_color.Music          = "#CD6723";       //brick
+        obj_color.Settings       = "#EAEAE7";       //ivory
+
         if (obj_color[app]) {
             return obj_color[app];
         } else {
             //random hex color;
-            return '#' + Math.floor(Math.random() * 16777215)
-                .toString(16);
+            return '#' + Math.floor(Math.random() * 16777215).toString(16);
         }
     };
 
@@ -104,18 +141,14 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
             if (!icon.manifest.icons) return;
 
             // guards
-            if( R.contains ( icon.manifest.name, apps_2_exclude ))
-                return;
-
-            if (icon.manifest.role == "homescreen") return;
-            if (icon.manifest.role == "addon") return;
+            if( R.contains ( icon.manifest.name, apps_2_exclude ))  return;
+            if (icon.manifest.role == "homescreen")                 return;
+            if (icon.manifest.role == "addon")                      return;
             //end guards
 
             var icon_image = navigator.mozApps.mgmt.getIcon(icon, 60);
 
             icon_image.then ( function ( img ) {
-
-
 
                 var name = icon.manifest.name;
                 var wordname = name.split(" ");
@@ -206,10 +239,7 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
         }
     });
 
-
     // 3, 2, 1 ...
     start();
-
-
 
 });
