@@ -18,7 +18,7 @@
  * @link        https://github.com/novia713/smokingtedscreen
  * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
  * @version     1.1
- * @date        20160110
+ * @date        20160111
  *
  * @see         https://github.com/mozilla-b2g/gaia/tree/88c8d6b7c6ab65505c4a221b61c91804bbabf891/apps/homescreen
  * @thanks      to @CodingFree for his tireless support and benevolent friendship
@@ -26,6 +26,7 @@
  *      - show wifi network name and telephony provider name
  *      - show weather
  *      - show missed calls
+ *      - default icon if not found
  */
 
 
@@ -132,6 +133,14 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
         }
     };
 
+    /**
+     * Prints set up message
+     */
+     var print_msg = function () {
+        var txt_msg  = "<div style='background-color:orange;color:white'><h3>Please, set this homescreen your default homescreen in <i>Settings / Homescreens / Change Homescreens</i>. This homescreen won't work if you don't do so</h3></div>";
+            txt_msg += "<div style='background-color:orange;color:black'><h3>Ve a <i>Configuración / Homescreens</i> y haz este homescreen tu homescreen por defecto. Si no lo haces, este homescreen no funciona!</h3></div>";
+        parent.html(txt_msg);
+     };
 
     /**
      * Renders the icon to the container.
@@ -207,6 +216,14 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
                 posX: 70
             });
 
+            myApps.then(
+                function (v) { //resolve
+
+                }, function(v){ //reject
+                    console.log(v);
+                    print_msg();
+                }
+            );
 
    } //end start
 
