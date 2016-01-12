@@ -79,11 +79,11 @@ requirejs.config({
 });
 
 
-require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
+require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], (jQuery, $, R) => {
 
     const apps_2_exclude = [
         "Downloads", "EmergencyCall", "System", "Legacy", "Ringtones",
-        "Legacy Home Screen", "Wallpaper", "Default Theme",
+        "Legacy Home Screen", "Wallpaper", "Default Theme", "Purchased Media",
         "Built-in Keyboard", "Bluetooth Manager", "Communications",
         "PDF Viewer", "Network Alerts", "WAP Push manager", "Default Home Screen" ];
 
@@ -97,7 +97,7 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
     config.columns[3] = 35;
 
     //Ted tile
-    var ted = function() {
+    var ted = () => {
             var tile = document.createElement('div');
             tile.className = 'tile';
             tile.id = 'pill';
@@ -108,7 +108,7 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
     }
 
     //colors
-    var get_color = function(app) {
+    var get_color = app => {
 
         var obj_color = {};
         obj_color.Communications = "#B2F2FF";       //green 5F9B0A
@@ -136,7 +136,7 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
     /**
      * Prints set up message
      */
-     var print_msg = function () {
+     var print_msg = () => {
         var txt_msg  = "<div style='background-color:orange;color:white'><h3>Please, set this homescreen your default homescreen in <i>Settings / Homescreens / Change Homescreens</i>. This homescreen won't work if you don't do so</h3></div>";
             txt_msg += "<div style='background-color:orange;color:black'><h3>Ve a <i>Configuración / Homescreens</i> y haz este homescreen tu homescreen por defecto. Si no lo haces, este homescreen no funciona!</h3></div>";
         parent.html(txt_msg);
@@ -145,7 +145,7 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
     /**
      * Renders the icon to the container.
      */
-    var render = function(icon) {
+    var render = icon => {
 
             if (!icon.manifest.icons) return;
 
@@ -157,7 +157,7 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
 
             var icon_image = navigator.mozApps.mgmt.getIcon(icon, 60);
 
-            icon_image.then ( function ( img ) {
+            icon_image.then ( img => {
 
                 var name = icon.manifest.name;
                 var wordname = name.split(" ");
@@ -184,7 +184,7 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
 
 
     /* fires up the painting */
-    var start = function() {
+    var start = () => {
             $('.tile').remove();
 
             /** Fetch all apps and render them. */
@@ -216,11 +216,10 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
                 posX: 70
             });
 
-            myApps.then(
-                function (v) { //resolve
+            myApps.then( v => { //resolve
 
-                }, function(v){ //reject
-                    console.log(v);
+                }, v => { //reject
+                    //console.log(v);
                     print_msg();
                 }
             );
@@ -244,7 +243,7 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], function(jQuery, $, R) {
     }); //end window event 'click'
 
 
-    $(document).on('visibilitychange', function(e) {
+    $(document).on('visibilitychange', e => {
 
         if (e.target.visibilityState === "visible") {
 
