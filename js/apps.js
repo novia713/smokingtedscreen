@@ -17,8 +17,8 @@
  * @copyright   leandro713 - 2016
  * @link        https://github.com/novia713/smokingtedscreen
  * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
- * @version     1.1
- * @date        20160111
+ * @version     1.2
+ * @date        20160121
  *
  * @see         https://github.com/mozilla-b2g/gaia/tree/88c8d6b7c6ab65505c4a221b61c91804bbabf891/apps/homescreen
  * @thanks      to @CodingFree for his tireless support and benevolent friendship
@@ -125,11 +125,15 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], (jQuery, $, R) => {
         obj_color.Music          = "#CD6723";       //brick
         obj_color.Settings       = "#EAEAE7";       //ivory
 
+        obj_color.Twitter     = "#c0deed";
+        obj_color.Facebook    = "#3b5998";
+
         if (obj_color[app]) {
             return obj_color[app];
         } else {
             //random hex color;
-            return '#' + Math.floor(Math.random() * 16777215).toString(16);
+            //return '#' + Math.floor(Math.random() * 16777215).toString(16);
+            return '#'+'0123456789abcdef'.split('').map(function(v,i,a){ return i>5 ? null : a[Math.floor(Math.random()*16)] }).join('');
         }
     };
 
@@ -231,7 +235,7 @@ require(["jQuery", 'auderoSmokeEffect', 'ramdajs'], (jQuery, $, R) => {
     Add an event listener to launch the app on click.
    */
     window.addEventListener('click', e => {
-        console.log(e);
+        //console.log(e);
 
         var i = iconMap.get(e.target);
         if (i) i.launch();
